@@ -45,20 +45,20 @@ func list_append(msg *nats.Msg){
 	   println("error is :: ")
 	   fmt.Println(err)
    }
-   // get or create value
+   // get value / TODO create is not present ?
    entry, _ := kv.Get(ctx, key)
-   println(" get kv is:")
-   println(string(entry.Value()))
-   // cast to list
+   // string to list 
    l := strings.Split(string(entry.Value()), ",")
    fmt.Println(reflect.TypeOf(l))
    // append value
    l = append(l, value)
-   // cast to string
+   // back to string
    l_string := strings.Join(l,",")
    println(l_string)
    // set value     TODO : error if version has changed ?
+   entry, _ := kv.Put(ctx, key, []byte(l_string) )
    // return status
+   msg.Respond([]byte("all done!!!"))
 
 
 }
