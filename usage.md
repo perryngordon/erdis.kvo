@@ -1,6 +1,6 @@
-clone repo
-cd to repo
-go run *.go
+clone repo <br>
+cd to repo <br>
+go run *.go <br>
 
 ---
 
