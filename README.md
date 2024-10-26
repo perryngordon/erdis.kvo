@@ -1,5 +1,6 @@
 # erdis.kvo
-Object Function Front End for NATS KV
+Object Function Front End <br>
+for NATS KV
 ---
 provides list functions <br>
 <ul>
