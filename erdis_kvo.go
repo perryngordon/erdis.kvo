@@ -53,5 +53,8 @@ func msgHandler(msg *nats.Msg){
      if cmd == "list.append" {
           list_append(msg)
      }
+     if cmd == "list.remove" {
+          list_remove(msg)
+     }          
 }
 
