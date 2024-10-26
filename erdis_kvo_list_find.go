@@ -4,7 +4,7 @@ import(
  "fmt"
 )
 
-func list_findValue(valueToFind *string, s []string) *[]int{
+func list_find(valueToFind *string, s []string) *[]int{
 
    fmt.Println(s)
    foundValue := []int{}

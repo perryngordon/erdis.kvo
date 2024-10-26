@@ -51,5 +51,10 @@ func msgHandler(msg *nats.Msg){
      if cmd == "list.remove" {
           list_remove(msg)
      }
+     if cmd == "list.valueExists" {
+	  ocurrences := list_valueExists(msg)
+	  str_ocurrences := intArrayToString(ocurrences,",")
+          msg.Respond([]byte(str_ocurrences))
+     }
 }
 

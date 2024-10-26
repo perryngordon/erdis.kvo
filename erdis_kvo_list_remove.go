@@ -10,6 +10,7 @@ import (
   "github.com/nats-io/nats.go/jetstream"
   //"container/list"
   //"reflect"
+  //"errors"
 )
 
 
@@ -41,21 +42,24 @@ func list_remove(msg *nats.Msg){
    if err != nil {
 	   println("error is :: ")
 	   fmt.Println(err)
+	   msg.Respond([]byte(err.Error()))
+	   return
    }
-
 
    // get value 
    entry, _ := kv.Get(ctx, key)
    if err != nil {
            println("error is :: ")
            fmt.Println(err)
+           msg.Respond([]byte(err.Error()))
+           return
    }
 
    // string to string array
    s := strings.Split(string(entry.Value()), ",")
 
    // get occurences in the slice of the value to remove
-   ptr_indices_valueToRemove := list_findValue(&valueToRemove, s)
+   ptr_indices_valueToRemove := list_find(&valueToRemove, s)
 
    // remove value(s)
    fmt.Println(s)
@@ -98,8 +102,6 @@ func removeIndicatedValueFromSliceUsingLotsOfCode(ptr_indices_valueToRemove *[]i
 
   return  s
 }
-
-
 
 
 

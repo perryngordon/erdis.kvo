@@ -8,10 +8,13 @@ import (
   "time"
   "github.com/nats-io/nats.go"
   "github.com/nats-io/nats.go/jetstream"
+  //"container/list"
+  //"reflect"
+  //"errors"
 )
 
 
-func list_append(msg *nats.Msg){
+func list_valueExists(msg *nats.Msg) *[]int{
    // make error
    url := os.Getenv("NATS_URL")
    if url == "" {
@@ -33,43 +36,34 @@ func list_append(msg *nats.Msg){
    key_string := cmd_args[5:]
    key := strings.Join(key_string,".") 
 
-   value := string(msg.Data)
+   valueToCheck := string(msg.Data)
 
    kv, err := js.KeyValue(ctx, bucket)
    if err != nil {
-	   println("error is :: ")
-	   fmt.Println(err)
+           println("error is :: ")
+           fmt.Println(err)
            msg.Respond([]byte(err.Error()))
-           return
+           return nil
    }
 
-
-   // get value / TODO create is not present ?
+   // get value 
    entry, _ := kv.Get(ctx, key)
    if err != nil {
            println("error is :: ")
            fmt.Println(err)
            msg.Respond([]byte(err.Error()))
-           return
+           return nil
    }
 
-   // string to list 
-   l := strings.Split(string(entry.Value()), ",")
+   // string to string array
+   s := strings.Split(string(entry.Value()), ",")
 
-   // append value
-   l = append(l, value)
+   // get occurences in the slice of the value to remove
+   ptr_indices_values := list_find(&valueToCheck, s)
 
-   // back to string
-   l_string := strings.Join(l,",")
 
-   // set value     TODO : error if version has changed ?
-   kv.Put(ctx, key, []byte(l_string) )
-
-   // return status
-   msg.Respond([]byte("all done!!!"))
-
+   return  ptr_indices_values
 
 }
-
 
 
