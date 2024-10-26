@@ -16,4 +16,4 @@ nats -s "nats://\<username>:\<passowrd>@<nats_server_address>" request erdis.kvo
 
 ---
 
-[home]([https://github.com/perryngordon/erdis.kvo/tree/main?tab=readme-ov-file](https://github.com/perryngordon/erdis.kvo/tree/main))
+[home](https://github.com/perryngordon/erdis.kvo/tree/main?tab=readme-ov-file](https://github.com/perryngordon/erdis.kvo/tree/main)
