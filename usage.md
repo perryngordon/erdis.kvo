@@ -1,5 +1,9 @@
 clone repo <br>
 cd to repo <br>
+
+---
+
+export NATS_URL=nats://\<username>:\<passowrd>@<nats_server_address>
 go run *.go <br>
 
 ---
