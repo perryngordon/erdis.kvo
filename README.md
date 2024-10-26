@@ -8,3 +8,7 @@ provides list functions <br>
   <li>list_remove</li>
   <li>list_find</li>
 </ul>
+
+---
+
+[usage](https://github.com/perryngordon/erdis.kvo/blob/main/usage.md)
