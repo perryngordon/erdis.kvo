@@ -9,7 +9,7 @@ export NATS_URL=nats://\<username>:\<passowrd>@<nats_server_address>
 
 ---
 
-nats -s "nats://<username>:<passowrd>@<nats_server_address>" requesterdis.kvo.list.pop.<bucket_name>.\<key> pop
+nats -s "nats://<username>:<passowrd>@<nats_server_address>" request erdis.kvo.list.pop.<bucket_name>.\<key> pop
 
 nats -s "nats://\<username>:\<passowrd>@<nats_server_address>" request erdis.kvo.list.append.<bucket_name>.\<key> <value_to_append>
 
