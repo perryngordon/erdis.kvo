@@ -4,7 +4,7 @@ cd to repo <br>
 ---
 
 export NATS_URL=nats://\<username>:\<passowrd>@<nats_server_address> <br>
-go run *.go <br>
+./erdis.kvo <br>
 
 ---
 
