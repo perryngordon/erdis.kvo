@@ -11,7 +11,7 @@ export NATS_URL=nats://\<username>:\<passowrd>@<nats_server_address>
 ./erdis.kvo 
 ```
 
-multiple runiing instances of erdis.kvo will behave as a queue group 
+multiple running instances of erdis.kvo will behave as a queue group 
 
 ---
 
