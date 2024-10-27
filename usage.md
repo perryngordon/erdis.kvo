@@ -3,13 +3,15 @@ cd to repo <br>
 
 ---
 
-export NATS_URL=nats://\<username>:\<passowrd>@<nats_server_address> 
+```
+export NATS_URL=nats://\<username>:\<passowrd>@<nats_server_address>
+```
 
 ```
 ./erdis.kvo 
 ```
 
-multiple 
+multiple runiing instances of erdis.kvo will behave as a queue group 
 
 ---
 
