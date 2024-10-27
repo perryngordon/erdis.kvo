@@ -14,7 +14,7 @@ import (
 )
 
 
-func list_remove(msg *nats.Msg){
+func list_remove_all(msg *nats.Msg){
    // make error
    url := os.Getenv("NATS_URL")
    if url == "" {
@@ -63,7 +63,7 @@ func list_remove(msg *nats.Msg){
 
    // remove value(s)
    fmt.Println(s)
-   s = removeIndicatedValueFromSliceUsingLotsOfCode(ptr_indices_valueToRemove, s)
+   s = removeAllOcurrencesOfTheIndicatedValueFromSlice(ptr_indices_valueToRemove, s)
    fmt.Println(s)
 
    // back to string
@@ -80,7 +80,7 @@ func list_remove(msg *nats.Msg){
 }
 
 
-func removeIndicatedValueFromSliceUsingLotsOfCode(ptr_indices_valueToRemove *[]int, s []string) []string{
+func removeAllOcurrencesOfTheIndicatedValueFromSlice(ptr_indices_valueToRemove *[]int, s []string) []string{
 
   for i,v := range *ptr_indices_valueToRemove {
 
