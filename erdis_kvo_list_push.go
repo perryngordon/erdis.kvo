@@ -14,7 +14,7 @@ import (
 )
 
 
-func list_remove_first(msg *nats.Msg){
+func list_push(msg *nats.Msg){
    // make error
    url := os.Getenv("NATS_URL")
    if url == "" {
@@ -36,7 +36,7 @@ func list_remove_first(msg *nats.Msg){
    key_string := cmd_args[5:]
    key := strings.Join(key_string,".") 
 
-   valueToRemove := string(msg.Data)
+   valueToPush := string(msg.Data)
 
    kv, err := js.KeyValue(ctx, bucket)
    if err != nil {
@@ -58,12 +58,10 @@ func list_remove_first(msg *nats.Msg){
    // string to string array
    s := strings.Split(string(entry.Value()), ",")
 
-   // get occurences in the slice of the value to remove
-   ptr_indices_valueToRemove := list_find(&valueToRemove, s)
 
    // remove value(s)
    fmt.Println(s)
-   s = removeIndicatedValueFromSlice(*ptr_indices_valueToRemove, s)
+   s = append([]string{valueToPush}, s...)
    fmt.Println(s)
 
    // back to string
@@ -78,17 +76,5 @@ func list_remove_first(msg *nats.Msg){
 
 
 }
-
-
-func removeIndicatedValueFromSlice(ptr_indices_valueToRemove []int, s []string) []string{
-
-	fmt.Printf("%d",ptr_indices_valueToRemove)
-	idx := ptr_indices_valueToRemove[0]
-	println(idx)
-        s = append(s[:idx], s[idx+1:]...)
-        return s
-}
-
-
 
 

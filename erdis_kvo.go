@@ -62,5 +62,8 @@ func msgHandler(msg *nats.Msg){
      if cmd == "list.pop" {
          list_pop(msg)
      }
+     if cmd == "list.push" {
+	 list_push(msg)
+     }
 }
 
