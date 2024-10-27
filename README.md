@@ -7,9 +7,9 @@ provides list functions <br>
   <li>list_append</li>
   <li>list_push</li>
   <li>list_pop</li>
-  <li>list_remove_first</li>
-  <li>list_remove_all</li>
-  <li>list_valueExists</li>
+  <li>list_remove_first (ocurrence)</li>
+  <li>list_remove_all (ocurrences)</li>
+  <li>list_valueExists - returns a list of indexes of each ocurrence</li>
 </ul>
 
 ---
