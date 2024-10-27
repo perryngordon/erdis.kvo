@@ -3,11 +3,15 @@ package main
 
 import (
 	"os"
-	"time"
+	//"time"
         "strings"
 
 	"github.com/nats-io/nats.go"
-
+        "github.com/nats-io/nats.go/jetstream"
+	//"context"
+	//"fmt"
+	"sync"
+	"log"
 )
 
 
@@ -23,20 +27,20 @@ func main() {
           println("problem connecting to NATS")
 	}
 	defer nc.Drain()
+     
 
+        wg := sync.WaitGroup{}
+        wg.Add(1)
 
-	sub, _ := nc.SubscribeSync("erdis.kvo.>")
-	msg, _ := sub.NextMsg(10 * time.Millisecond)
+        if _, err := nc.QueueSubscribe("erdis.kvo.>", "queue_erdis_kvo", func(msg *nats.Msg)  {
+		msgHandler(msg)
+		//wg.Done()
+        }); err != nil {
+            log.Fatal(err)
+	    println(err.Error())
+        }
 
-         for {
-	         msg, _ = sub.NextMsg(10 * time.Millisecond)
-		 if msg != nil {
-			 msgHandler(msg)
-		 }
-
-	 }
-
-	defer sub.Unsubscribe()
+        wg.Wait()
 
 }
 
@@ -65,5 +69,23 @@ func msgHandler(msg *nats.Msg){
      if cmd == "list.push" {
 	 list_push(msg)
      }
+
 }
 
+
+//  google ai // Here's how you can convert a jetstream.Message to a nats.Msg
+func jetstreamMsgToNatsMsg(jsMsg jetstream.Msg) *nats.Msg {
+
+    return &nats.Msg{
+
+        Subject: jsMsg.Subject(),
+
+        Data:   jsMsg.Data(),
+
+        Reply:  jsMsg.Reply(),
+
+        // Add any other relevant metadata from jsMsg if needed
+
+    }
+
+}
