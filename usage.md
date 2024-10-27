@@ -3,8 +3,12 @@ cd to repo <br>
 
 ---
 
-export NATS_URL=nats://\<username>:\<passowrd>@<nats_server_address> <br>
-./erdis.kvo <br>
+nats -s "nats://<username>:<passowrd>@<nats_server_address>" request erdis.kvo.list.append.<bucket_name>.<key> <value_to_append>
+
+--
+
+export NATS_URL=nats://\<username>:\<passowrd>@<nats_server_address> 
+./erdis.kvo 
 
 ---
 
