@@ -8,6 +8,7 @@ import (
   "time"
   "github.com/nats-io/nats.go"
   "github.com/nats-io/nats.go/jetstream"
+  "slices"
 )
 
 
@@ -43,8 +44,15 @@ func list_append(msg *nats.Msg){
            return
    }
 
+   // "get value" (below) is segfaulting if the key does not already exist (as of 241221)
+   // so check it first and create it if it is does not exist
+   keys, err := kv.Keys(ctx, nil)
+   if ! slices.Contains(keys,key) {
+     // create key
+     kv.Put(ctx, key, []byte(""))
+   } 
 
-   // get value / TODO create is not present ?
+   // get value 
    entry, _ := kv.Get(ctx, key)
    if err != nil {
            println("error is :: ")
@@ -67,7 +75,7 @@ func list_append(msg *nats.Msg){
 
    // return status
    msg.Respond([]byte("all done!!!"))
-
+  
 
 }
 

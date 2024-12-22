@@ -11,6 +11,7 @@ import (
   //"container/list"
   //"reflect"
   //"errors"
+  "slices"
 )
 
 
@@ -44,6 +45,12 @@ func list_remove_first(msg *nats.Msg){
 	   fmt.Println(err)
 	   msg.Respond([]byte(err.Error()))
 	   return
+   }
+
+   keys, err := kv.Keys(ctx, nil)
+   if ! slices.Contains(keys,key) {
+     // create key
+     kv.Put(ctx, key, []byte(""))
    }
 
    // get value 

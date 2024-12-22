@@ -11,6 +11,7 @@ import (
   //"container/list"
   //"reflect"
   //"errors"
+  "slices"
 )
 
 
@@ -45,6 +46,12 @@ func list_pop(msg *nats.Msg){
 	   return
    }
 
+   keys, err := kv.Keys(ctx, nil)
+   if ! slices.Contains(keys,key) {
+     // create key
+     kv.Put(ctx, key, []byte(""))
+   }
+
    // get value 
    entry, _ := kv.Get(ctx, key)
    if err != nil {
@@ -53,7 +60,7 @@ func list_pop(msg *nats.Msg){
            msg.Respond([]byte(err.Error()))
            return
    }
-
+   
    // string to string array
    s := strings.Split(string(entry.Value()), ",")
 

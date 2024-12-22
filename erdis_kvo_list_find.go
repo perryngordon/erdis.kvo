@@ -2,6 +2,7 @@ package main
 
 import(
  "fmt"
+ "slices"
 )
 
 func list_find(valueToFind *string, s []string) *[]int{

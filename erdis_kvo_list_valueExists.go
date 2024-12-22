@@ -11,6 +11,7 @@ import (
   //"container/list"
   //"reflect"
   //"errors"
+  "slices"
 )
 
 
@@ -46,6 +47,12 @@ func list_valueExists(msg *nats.Msg) *[]int{
            return nil
    }
 
+   keys, err := kv.Keys(ctx, nil)
+   if ! slices.Contains(keys,key) {
+     // create key
+     kv.Put(ctx, key, []byte(""))
+   }
+
    // get value 
    entry, _ := kv.Get(ctx, key)
    if err != nil {
@@ -54,6 +61,7 @@ func list_valueExists(msg *nats.Msg) *[]int{
            msg.Respond([]byte(err.Error()))
            return nil
    }
+
 
    // string to string array
    s := strings.Split(string(entry.Value()), ",")
