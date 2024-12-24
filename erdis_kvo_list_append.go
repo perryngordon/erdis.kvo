@@ -44,25 +44,26 @@ func list_append(msg *nats.Msg){
            return
    }
 
+   l := []string{}
    // "get value" (below) is segfaulting if the key does not already exist (as of 241221)
-   // so check it first and create it if it is does not exist
    keys, err := kv.Keys(ctx, nil)
    if ! slices.Contains(keys,key) {
-     // create key
-     kv.Put(ctx, key, []byte(""))
-   } 
+      // no op
 
-   // get value 
-   entry, _ := kv.Get(ctx, key)
-   if err != nil {
+   }else{
+     // get value 
+     entry, _ := kv.Get(ctx, key)
+     // string to list 
+     l = strings.Split(string(entry.Value()), ",")
+
+     if err != nil {
            println("error is :: ")
            fmt.Println(err)
            msg.Respond([]byte(err.Error()))
            return
+     }
    }
 
-   // string to list 
-   l := strings.Split(string(entry.Value()), ",")
 
    // append value
    l = append(l, value)

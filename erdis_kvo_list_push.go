@@ -47,25 +47,25 @@ func list_push(msg *nats.Msg){
 	   return
    }
 
+   s := []string{}
+   // "get value" (below) is segfaulting if the key does not already exist (as of 241221)
    keys, err := kv.Keys(ctx, nil)
    if ! slices.Contains(keys,key) {
-     // create key
-     kv.Put(ctx, key, []byte(""))
-   }
+      // no op
 
-   // get value 
-   entry, _ := kv.Get(ctx, key)
-   if err != nil {
+   }else{
+     // get value 
+     entry, _ := kv.Get(ctx, key)
+     // string to list 
+     s = strings.Split(string(entry.Value()), ",")
+
+     if err != nil {
            println("error is :: ")
            fmt.Println(err)
            msg.Respond([]byte(err.Error()))
            return
+     }
    }
-
-
-   // string to string array
-   s := strings.Split(string(entry.Value()), ",")
-
 
    // remove value(s)
    fmt.Println(s)

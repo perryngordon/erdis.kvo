@@ -46,23 +46,28 @@ func list_pop(msg *nats.Msg){
 	   return
    }
 
+   
+   s := []string{}
+   // "get value" (below) is segfaulting if the key does not already exist (as of 241221)
    keys, err := kv.Keys(ctx, nil)
    if ! slices.Contains(keys,key) {
-     // create key
-     kv.Put(ctx, key, []byte(""))
-   }
+      // no op
 
-   // get value 
-   entry, _ := kv.Get(ctx, key)
-   if err != nil {
+   }else{
+     // get value 
+     entry, _ := kv.Get(ctx, key)
+     // string to list 
+     s = strings.Split(string(entry.Value()), ",")
+
+     if err != nil {
            println("error is :: ")
            fmt.Println(err)
            msg.Respond([]byte(err.Error()))
            return
+     }
    }
-   
-   // string to string array
-   s := strings.Split(string(entry.Value()), ",")
+
+
 
    // pop : remove value at index 0
    fmt.Println(s)
@@ -73,9 +78,15 @@ func list_pop(msg *nats.Msg){
    // back to string
    l_string := strings.Join(s,",")
 
+   if l_string == "" {
+	   // delete this key if it is now empty
+	   kv.Delete(ctx, key)
+   }else{
 
    // set value     TODO : error if version has changed (use update instead of put)?
    kv.Put(ctx, key, []byte(l_string) )
+
+   }
 
    // return status
    msg.Respond([]byte(popValue))
