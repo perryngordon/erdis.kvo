@@ -52,7 +52,8 @@ func list_pop(msg *nats.Msg){
    keys, err := kv.Keys(ctx, nil)
    if ! slices.Contains(keys,key) {
       // no op
-
+      msg.Respond([]byte("KEY_NOT_FOUND"))
+      return
    }else{
      // get value 
      entry, _ := kv.Get(ctx, key)
