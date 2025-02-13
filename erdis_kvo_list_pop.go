@@ -72,6 +72,12 @@ func list_pop(msg *nats.Msg){
 
    // pop : remove value at index 0
    fmt.Println(s)
+   
+   if len(s) == 0{
+	msg.Respond([]byte("none"))
+	return
+   }
+
    popValue := s[0] 
    s = append(s[:0], s[1:]...)
    fmt.Println(s)
