@@ -15,7 +15,7 @@ import (
 )
 
 
-func list_pop(msg *nats.Msg){
+func kv_delete(msg *nats.Msg){
    // make error
    url := os.Getenv("NATS_URL")
    if url == "" {
@@ -47,7 +47,6 @@ func list_pop(msg *nats.Msg){
    }
 
    
-   s := []string{}
    // "get value" (below) is segfaulting if the key does not already exist (as of 241221)
    keys, err := kv.Keys(ctx, nil)
    if ! slices.Contains(keys,key) {
@@ -55,13 +54,11 @@ func list_pop(msg *nats.Msg){
       msg.Respond([]byte("no op"))
       return
    }else{
-     // get value 
-     entry, _ := kv.Get(ctx, key)
-     // string to list 
-     s = strings.Split(string(entry.Value()), ",")
+     // delete key 
+     err := kv.Delete(ctx, key)
 
      if err != nil {
-           println("error is :: ")
+           println("error / kv delete key :: ")
            fmt.Println(err)
            msg.Respond([]byte(err.Error()))
            return
@@ -70,33 +67,10 @@ func list_pop(msg *nats.Msg){
 
 
 
-   // pop : remove value at index 0
-   fmt.Println(s)
-   
-   if len(s) == 0{
-	msg.Respond([]byte("none"))
-	return
-   }
 
-   popValue := s[0] 
-   s = append(s[:0], s[1:]...)
-   fmt.Println(s)
-
-   // back to string
-   l_string := strings.Join(s,",")
-
-   if l_string == "" {
-	   // delete this key if it is now empty
-	   kv.Delete(ctx, key)
-   }else{
-
-   // set value     TODO : error if version has changed (use update instead of put)?
-   kv.Put(ctx, key, []byte(l_string) )
-
-   }
 
    // return status
-   msg.Respond([]byte(popValue))
+   msg.Respond([]byte("kv delete completed .. "))
 
 
 }
