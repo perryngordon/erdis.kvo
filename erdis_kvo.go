@@ -70,6 +70,9 @@ func msgHandler(msg *nats.Msg){
 	 list_push(msg)
      }
 
+     if cmd == "list.kv_delete" {
+         kv_delete(msg)
+     }
 }
 
 
